@@ -11,24 +11,26 @@ const GLint WIDTH = 800, HEIGHT = 600;
 GLuint VAO, VBO, shader;
 
 //Vertex Shader
-static const char* vShader =
-"#version 330"
-"layout(location = 0) in vec3 pos;"
-""
-"void main()"
-"{"
-"  gl_Position = vec4(0.4 * pos.x, 0.4 * pos.y, pos.z, 1.0);"
-"};   ";
+static const char* vShader = "								 \n\
+#version 330												 \n\
+															 \n\
+layout (location = 0) in vec3 pos;							 \n\
+															 \n\
+void main()													 \n\
+{															 \n\
+   gl_Position = vec4(0.4 * pos.x, 0.4 * pos.y, pos.z, 1.0); \n\
+}";
+
 
 //Fragment Shader
 static const char* fShader =
-"#version 330                                                "
-"out vec4 color;                                             "
-"                                                            "
-"void main()                                                 "
-"{                                                           "
-"  color = vec4(1.0, 0.0, 0.0, 1.0);                         "
-"};                                                          ";
+"#version 330                                               \n\
+out vec4 color;                                             \n\
+                                                            \n\
+void main()                                                 \n\
+{                                                           \n\
+  color = vec4(1.0, 0.0, 0.0, 1.0);                         \n\
+}";                                                          
 
 
 void CreateTriangle()
@@ -84,7 +86,7 @@ void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType)
 
 	glGetShaderiv(theShader, GL_COMPILE_STATUS, &result);
 	if (!result) {
-		glGetShaderInfoLog(shader, sizeof(eLog), NULL, eLog);
+		glGetShaderInfoLog(theShader, sizeof(eLog), NULL, eLog);
 		printf("Error compiling the %d shader: '%s'\n", shaderType, eLog);
 		return;
 	}
