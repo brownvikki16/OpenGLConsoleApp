@@ -57,5 +57,8 @@ private:
 
 	//handles mouse movement
 	static void handleMouse(GLFWwindow* window, double xPos, double yPos);
+
+	//handles mouse buttons
+	//static void handleMouseButtons(GLFWwindow* window, int button, int action, int mods);
 };
 

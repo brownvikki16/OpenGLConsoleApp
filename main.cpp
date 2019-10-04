@@ -17,7 +17,7 @@
 
 
  //window dimensions
-const GLint WIDTH = 800, HEIGHT = 600;
+const GLint WIDTH = 1920, HEIGHT = 1080;
 //convert to Radians
 const float toRadians = 3.14159265f / 180.0f;
 
@@ -34,7 +34,7 @@ std::vector<Shader>shaderList;
 
 //create camera
 Camera camera;
-
+/*
 bool direction = true;
 float triOffset = 0.0f;   
 float triMaxOffset = 0.7f;  
@@ -46,6 +46,7 @@ bool sizeDirection = true;
 float curSize = 0.4f;
 float maxSize = 0.8f;
 float minSize = 0.1f;
+*/
 
 //Vertex Shader
 //note the input variables will change often but the uniform 
@@ -103,13 +104,15 @@ void createShaders()
 
 int main()
 {
-	mainWindow = glWindow(800, 600);
+	mainWindow = glWindow(WIDTH, HEIGHT);
 	mainWindow.Initialise();
 
 	CreateObject();
 	createShaders();
 
-	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, 0.0f, 0.1f, 1.0f);
+	//initialize camera with:
+	//startPosition, startUpVector, startYawAngle, startPitchAngle, startTurnspeed, startMoveSpeed
+	camera = Camera(glm::vec3(1.0f, 5.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f, 0.1f, 1.0f);
 
 	GLuint uniformProjection = 0;
 	GLuint uniformModel = 0;

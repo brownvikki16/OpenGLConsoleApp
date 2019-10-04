@@ -116,6 +116,8 @@ void glWindow::createCallbacks()
 {
 	glfwSetKeyCallback(mainWindow, handleKeys);
 	glfwSetCursorPosCallback(mainWindow, handleMouse);
+	//glfwSetMouseButtonCallback(mainWindow, handleMouseButtons);
+
 }
 
 void glWindow::handleKeys(GLFWwindow* window, int key, int code, int action, int mode)
@@ -170,3 +172,15 @@ void glWindow::handleMouse(GLFWwindow* window, double xPos, double yPos)
 	theWindow->lastY = yPos;
 	//printf("x:%.6f, y:%.6f\n", theWindow->xChange, theWindow->yChange);
 }
+
+/*
+void glWindow::handleMouseButtons(GLFWwindow* window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	{
+		
+		//printf("button pressed\n");
+	}
+}
+
+*/
