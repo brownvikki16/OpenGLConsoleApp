@@ -14,6 +14,12 @@
 #include "Shader.h"
 #include "glWindow.h"
 #include "Camera.h"
+#include "Texture.h"
+#include "Light.h"
+#include "Game.h"
+
+
+//#include "include/SOIL2.h"
 
 
  //window dimensions
@@ -23,6 +29,7 @@ const float toRadians = 3.14159265f / 180.0f;
 
 //create window
 glWindow mainWindow;
+
 
 //delaTime variables
 GLfloat deltaTime = 0.0f;
@@ -34,19 +41,15 @@ std::vector<Shader>shaderList;
 
 //create camera
 Camera camera;
-/*
-bool direction = true;
-float triOffset = 0.0f;   
-float triMaxOffset = 0.7f;  
-float triIncrement = 0.0005f;  
 
-float curAngle = 0.0f;
+//Textures
+Texture stoneTexture;
 
-bool sizeDirection = true;
-float curSize = 0.4f;
-float maxSize = 0.8f;
-float minSize = 0.1f;
-*/
+//create light
+Light mainLight;
+
+//create game class
+Game GameClass;
 
 //Vertex Shader
 //note the input variables will change often but the uniform 
@@ -56,6 +59,43 @@ static const char* vShader = "E:\\Education\\5TH YEAR\\FALL2019\\CPSC499\\GameDe
 //Fragment Shader
 static const char* fShader = "E:\\Education\\5TH YEAR\\FALL2019\\CPSC499\\GameDev\\OpenGLConsoleApp\\Shaders\\fragShader.txt";
 
+//calculate average normals
+void calcAverageNormals(unsigned int * indices, unsigned int indiceCount, GLfloat * vertices, 
+						unsigned int verticesCount, unsigned int vLength, unsigned int normalOffset)
+{
+	//for each triangle
+	for (size_t i = 0; i < indiceCount; i += 3)
+	{
+		//set variables to hold the 1st indices value of each triangle
+		//multiplying by vLength will jump through multiple indices and vertice values
+		unsigned int in0 = indices[i] * vLength;
+		unsigned int in1 = indices[i + 1] * vLength;
+		unsigned int in2 = indices[i + 2] * vLength;
+
+		//define vertice edges/lines
+		glm::vec3 v1(vertices[in1] - vertices[in0], vertices[in1 + 1] - vertices[in0 + 1], vertices[in1 + 2] - vertices[in0 + 2]);
+		glm::vec3 v2(vertices[in2] - vertices[in0], vertices[in2+ 1] - vertices[in0 + 1], vertices[in2 + 2] - vertices[in0 + 2]);
+		//calculate the normal of that surface
+		glm::vec3 normal = glm::cross(v1, v2);
+		normal = glm::normalize(normal);
+
+		//add values into normal coordinates
+		in0 += normalOffset;	in1 += normalOffset;		in2 += normalOffset;
+		vertices[in0] += normal.x; vertices[in0 + 1] += normal.y; vertices[in0 + 2] += normal.z;
+		vertices[in1] += normal.x; vertices[in1 + 1] += normal.y; vertices[in1 + 2] += normal.z;
+		vertices[in2] += normal.x; vertices[in2 + 1] += normal.y; vertices[in2 + 2] += normal.z;
+
+	}
+
+	//for each vertices, replace with normalized normals
+	for (size_t i = 0; i < verticesCount / vLength; i++)
+	{
+		unsigned int nOffset = i * vLength + normalOffset;
+		glm::vec3 vec(vertices[nOffset], vertices[nOffset + 1], vertices[nOffset + 2]);
+		vec = glm::normalize(vec);
+		vertices[nOffset] = vec.x; vertices[nOffset + 1] = vec.y; vertices[nOffset + 2] = vec.z;
+	}
+}
 
 void CreateObject()
 {
@@ -68,17 +108,20 @@ void CreateObject()
 
 	//array of triangle vertex points
 	GLfloat vertices[] = {
-		-1.0f, -1.0f, 0.0f, //0
-		0.0f, -1.0f, 1.0f, //1
-		1.0f, -1.0f, 0.0f, //2
-		0.0f, 1.0f, 0.0f, //3
+		//x       y     z		 u     v		nx     ny    nz
+		-1.0f, -1.0f, 0.0f,	   0.0f, 0.0f,		0.0f, 0.0f, 0.0f,//bottom left value
+		0.0f, -1.0f, 1.0f,	   0.5f, 0.0f, 		0.0f, 0.0f, 0.0f,//bottom middle
+		1.0f, -1.0f, 0.0f,	   1.0f, 0.0f, 		0.0f, 0.0f, 0.0f,//bottom right
+		0.0f, 1.0f, 0.0f,	   0.5f, 1.0f, 		0.0f, 0.0f, 0.0f//top middle
 	};
+
+	calcAverageNormals(indices, 12, vertices, 32, 8, 5);
 	
 	//declare and define mesh object from mesh class
 	mesh* obj1 = new mesh();
 
 	//create mesh
-	obj1->CreateMesh(vertices, indices, 12, 12);
+	obj1->CreateMesh(vertices, indices, 32, 12);
 	//add obj1 to end of list
 	meshList.push_back(obj1);
 
@@ -86,7 +129,7 @@ void CreateObject()
 	mesh* obj2 = new mesh();
 
 	//create mesh
-	obj2->CreateMesh(vertices, indices, 12, 12);
+	obj2->CreateMesh(vertices, indices, 32, 12);
 	//add obj2 to end of list
 	meshList.push_back(obj2);
 }
@@ -102,6 +145,7 @@ void createShaders()
 }
 
 
+
 int main()
 {
 	mainWindow = glWindow(WIDTH, HEIGHT);
@@ -112,11 +156,23 @@ int main()
 
 	//initialize camera with:
 	//startPosition, startUpVector, startYawAngle, startPitchAngle, startTurnspeed, startMoveSpeed
-	camera = Camera(glm::vec3(1.0f, 5.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f, 0.1f, 1.0f);
+	camera = Camera(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), -20.0f, 0.0f, 0.1f, 1.0f);
+
+	stoneTexture = Texture("E:\\Education\\5TH YEAR\\FALL2019\\CPSC499\\GameDev\\OpenGLConsoleApp\\Textures\\stonePath.png");
+	stoneTexture.LoadTextureA();
+
+	//initialize light
+	mainLight = Light(1.0f, 1.0f, 1.0f, 0.3f, 2.0f, -1.0f, -2.0f, 1.0f);
+
+
 
 	GLuint uniformProjection = 0;
 	GLuint uniformModel = 0;
 	GLuint uniformView = 0;
+	GLuint uniformAmbientIntensity = 0;
+	GLuint uniformAmbientColor = 0;
+	GLuint uniformDirection = 0;
+	GLuint uniformDiffuseIntensity = 0;
 
 
 	//create projection
@@ -136,43 +192,9 @@ int main()
 		glfwPollEvents();
 
 		camera.keyControl(mainWindow.getKeys(), deltaTime);
+		//note:mouse control will not work 100%, for now it's just initializing the rotation data
 		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 
-		/*
-		//if triangle is moving positive, add increment value to offset
-		if (direction)
-		{
-			triOffset += triIncrement;
-		}
-		else  //opposite
-		{
-			triOffset -= triIncrement;
-		}
-		if (abs(triOffset) >= triMaxOffset)
-		{
-			direction = !direction;  //swap bool value
-		}
-
-		curAngle += 0.01f;
-		if (curAngle >=360)
-		{
-			curAngle -= 360;
-		}
-
-		if (sizeDirection)
-		{
-			curSize += 0.001f;
-		}
-		else
-		{
-			curSize -= 0.001f;
-		}
-
-		if (curSize>= maxSize || curSize <= minSize)
-		{
-			sizeDirection = !sizeDirection;
-		}
-		*/
 
 		//clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f); //clears out all drawn things
@@ -185,12 +207,20 @@ int main()
 		uniformModel = shaderList[0].getModelLocation();
 		uniformProjection = shaderList[0].getProjectionLocation();
 		uniformView = shaderList[0].getViewLocation();
+		uniformAmbientColor = shaderList[0].GetAmbientColorLocation();
+		uniformAmbientIntensity = shaderList[0].getAmbientIntensityLocation();
+		uniformDirection = shaderList[0].GetDirectionLocation();
+		uniformDiffuseIntensity = shaderList[0].GetDiffuseIntensityLocation();
 
+		//glm::vec3 PlayerPos(0.0f, 0.0f, 0.0f);
+
+
+		mainLight.UseLight(uniformAmbientIntensity, uniformAmbientColor, uniformDiffuseIntensity, uniformDirection);
 
 		//4x4 matrix, automatically set to an identity matrix
 		glm::mat4 model(1.0f);
 		//take identity matrix and apply translation to it. the x value will change to triOffset
-		//model = glm::translate(model, glm::vec3(0.0f, 0.5f, -2.5f));
+		model = glm::translate(model, GameClass.ProcessGameInput(mainWindow.getKeys(), deltaTime));
 		//rotate model by 45 degrees on the Z axis
 		//model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
@@ -200,7 +230,7 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
-
+		stoneTexture.UseTexture();
 		meshList[0]->RenderMesh();
 		
 
@@ -208,6 +238,7 @@ int main()
 		model2 = glm::translate(model2, glm::vec3(0.3f, 0.1f, -2.5f));
 		model2 = glm::scale(model2, glm::vec3(0.4f, 0.4f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model2));
+		stoneTexture.UseTexture();
 		meshList[1]->RenderMesh();
 
 		//clears shader
@@ -221,8 +252,6 @@ int main()
 		mainWindow.swapBuffers();
 
 	}
-
-
 
 
 	return 0;

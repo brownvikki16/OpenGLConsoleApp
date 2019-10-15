@@ -95,13 +95,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\include;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\SOIL2;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLFW\lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLEW\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;soil2-debug.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\lib;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\SOIL2\SOIL2\lib;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLFW\lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLEW\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
@@ -114,13 +114,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\include;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\SOIL2;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLFW\lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLEW\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;soil2-debug.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\lib;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\SOIL2\SOIL2\lib;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLFW\lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLEW\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
@@ -135,15 +135,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\include;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\SOIL2;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLFW\lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLEW\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;soil2-debug.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\lib;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\SOIL2\SOIL2\lib;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLFW\lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLEW\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
@@ -158,31 +158,39 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\include;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\SOIL2;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLFW/include;E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLFW\lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLEW\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;soil2-debug.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\lib;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\SOIL2\SOIL2\lib;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLFW\lib-vc2019;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\GLEW\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="glWindow.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="OpenGLConsoleApp.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="glWindow.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="mesh.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

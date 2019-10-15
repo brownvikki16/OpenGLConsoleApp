@@ -25,13 +25,13 @@ void Camera::keyControl(bool* keys, GLfloat deltaTime)
 	//if W is pressed, move forward
 	if (keys[GLFW_KEY_W])
 	{
-		position += front * velocity;
+		position -= camBackward * velocity;
 	}
 
 	//move backwards
 	if (keys[GLFW_KEY_S])
 	{
-		position -= front * velocity;
+		position += camBackward * velocity;
 	}
 	
 	//move left
@@ -92,6 +92,11 @@ void Camera::update()
 	
 	//calculate the up vector by cross product of right and front
 	up = glm::normalize(glm::cross(right, front));
+
+	//set backward vector to right and rotate it
+	camBackward = right; 
+	camBackward.x = cos(glm::radians(yaw));
+	camBackward.z = sin(glm::radians(yaw));
 }
 
 Camera::~Camera()

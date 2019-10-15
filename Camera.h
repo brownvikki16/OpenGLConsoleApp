@@ -23,10 +23,11 @@ public:
 
 private:
 	glm::vec3 position;	//position of camera in x, y, z
-	glm::vec3 front;	//same but front
-	glm::vec3 up;		//same but up
-	glm::vec3 right;	//same but right
+	glm::vec3 front;	//front vector of camera
+	glm::vec3 up;		//up vector of camera
+	glm::vec3 right;	//right vector of camera
 	glm::vec3 worldUp;	//frame of reference for the actual WORLD up
+	glm::vec3 camBackward; //vector for camera pointing backward
 
 	GLfloat yaw;
 	GLfloat pitch;

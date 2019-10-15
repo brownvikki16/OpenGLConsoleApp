@@ -115,7 +115,7 @@ glWindow::~glWindow()
 void glWindow::createCallbacks()
 {
 	glfwSetKeyCallback(mainWindow, handleKeys);
-	glfwSetCursorPosCallback(mainWindow, handleMouse);
+	//glfwSetCursorPosCallback(mainWindow, handleMouse);
 	//glfwSetMouseButtonCallback(mainWindow, handleMouseButtons);
 
 }

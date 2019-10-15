@@ -5,6 +5,8 @@ Shader::Shader()
 	shaderID = 0;
 	uniformModel = 0;
 	uniformProjection = 0;
+	uniformAmbientIntensity = 0;
+	uniformAmbientColor = 0;
 
 }
 
@@ -63,6 +65,26 @@ GLuint Shader::getViewLocation()
 	return uniformView;
 }
 
+GLuint Shader::getAmbientIntensityLocation()
+{
+	return uniformAmbientIntensity;
+}
+
+GLuint Shader::GetAmbientColorLocation()
+{
+	return uniformAmbientColor;
+}
+
+GLuint Shader::GetDiffuseIntensityLocation()
+{
+	return uniformDiffuseIntensity;
+}
+
+GLuint Shader::GetDirectionLocation()
+{
+	return uniformDirection;
+}
+
 
 void Shader::compileShader(const char* vertexCode, const char* fragmentCode)
 {
@@ -99,10 +121,14 @@ void Shader::compileShader(const char* vertexCode, const char* fragmentCode)
 		return;
 	}
 
-	//place location ID into the variable
+	//connect the variables in the Shader file, to the variables in the Shader class
 	uniformModel = glGetUniformLocation(shaderID, "model");
 	uniformProjection = glGetUniformLocation(shaderID, "projection");
 	uniformView = glGetUniformLocation(shaderID, "view");
+	uniformAmbientColor = glGetUniformLocation(shaderID, "directionalLight.color");
+	uniformAmbientIntensity = glGetUniformLocation(shaderID, "directionalLight.ambientIntensity");
+	uniformDirection = glGetUniformLocation(shaderID, "directionalLight.direction");
+	uniformDiffuseIntensity = glGetUniformLocation(shaderID, "directionalLight.diffuseIntensity");
 
 	{
 
