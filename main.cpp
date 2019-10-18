@@ -17,7 +17,7 @@
 #include "Texture.h"
 #include "Light.h"
 #include "Game.h"
-//#include "Model.h"
+#include "Model.h"
 
 
 //#include "include/SOIL2.h"
