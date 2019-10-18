@@ -1,16 +1,23 @@
 #include "Game.h"
 
+
 Game::Game()
 {
-	playerSpeed = 3.0f;
-	PlayerPos.x = 0.0f;	PlayerPos.y = 0.0f; PlayerPos.z = 0.0f;
+	playerSpeed = 0;
+	playerPos = glm::vec3(0.0f, 0.0f, 0.0f);
+}
+
+Game::Game(GLfloat speed, glm::vec3 playerPosition)
+{
+	playerSpeed = speed;
+	playerPos = playerPosition;
 
 }
 
 Game::~Game()
 {
 	playerSpeed = 0.0f;
-	PlayerPos.x = 0.0f;	PlayerPos.y = 0.0f; PlayerPos.z = 0.0f;
+	playerPos = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
 
@@ -22,8 +29,8 @@ glm::vec3 Game::ProcessGameInput(bool* keys, GLfloat deltaTime)
 	//if W is pressed, move forward
 	if (keys[GLFW_KEY_Q])
 	{
-		PlayerPos.z += velocity;
-		return PlayerPos;
+		playerPos.x += velocity;
+		return playerPos;
 	}
 
 	////move backwards
@@ -47,5 +54,5 @@ glm::vec3 Game::ProcessGameInput(bool* keys, GLfloat deltaTime)
 	//	return position;
 	//}
 
-	return PlayerPos;
+	return playerPos;
 }

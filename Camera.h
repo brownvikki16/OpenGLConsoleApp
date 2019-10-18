@@ -7,13 +7,15 @@
 
 #include <GLFW/glfw3.h>
 
+#include "Game.h"
+
 class Camera
 {
 public:
 	Camera();
 	Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startTurnSpeed, GLfloat startMoveSpeed);
 
-	void keyControl(bool* keys, GLfloat deltaTime);
+	void keyControl(int mode, bool* keys, GLfloat deltaTime);
 
 	void mouseControl(GLfloat xChange, GLfloat yChange);
 

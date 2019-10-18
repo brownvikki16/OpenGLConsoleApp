@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Game.h"
 
 Camera::Camera()
 {
@@ -18,32 +19,49 @@ Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLf
 	update();
 }
 
-void Camera::keyControl(bool* keys, GLfloat deltaTime)
+//mode 1 = manual 2 = player
+void Camera::keyControl(int mode, bool* keys, GLfloat deltaTime)
 {
 	GLfloat velocity = movementSpeed * deltaTime;
-
-	//if W is pressed, move forward
-	if (keys[GLFW_KEY_W])
-	{
-		position -= camBackward * velocity;
-	}
-
-	//move backwards
-	if (keys[GLFW_KEY_S])
-	{
-		position += camBackward * velocity;
-	}
 	
-	//move left
-	if (keys[GLFW_KEY_A])
+	//if W is pressed, move forward
+	if (mode == 1)
 	{
-		position -= right * velocity;
-	}
 
-	//move right
-	if (keys[GLFW_KEY_D])
-	{
-		position += right * velocity;
+		if (keys[GLFW_KEY_W])
+		{
+			position -= camBackward * velocity;
+		}
+
+		//move backwards
+		if (keys[GLFW_KEY_S])
+		{
+			position += camBackward * velocity;
+		}
+
+		//move left
+		if (keys[GLFW_KEY_A])
+		{
+			position -= right * velocity;
+		}
+
+		//move right
+		if (keys[GLFW_KEY_D])
+		{
+			position += right * velocity;
+		}
+
+		//zoom in
+		if (keys[GLFW_KEY_Z])
+		{
+			position += front * velocity;
+		}
+
+		//zoom out
+		if (keys[GLFW_KEY_X])
+		{
+			position -= front * velocity;
+		}
 	}
 }
 
@@ -70,6 +88,7 @@ void Camera::mouseControl(GLfloat xChange, GLfloat yChange)
 	update();
 	
 }
+
 
 
 glm::mat4 Camera::calculateViewMatrix()

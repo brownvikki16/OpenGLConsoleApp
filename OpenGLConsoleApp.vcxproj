@@ -72,19 +72,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;$(IncludePath)</IncludePath>
+    <IncludePath>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;$(IncludePath)</IncludePath>
+    <IncludePath>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;$(IncludePath)</IncludePath>
+    <IncludePath>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;$(IncludePath)</IncludePath>
+    <IncludePath>E:\Education\5TH YEAR\FALL2019\CPSC499\GameDev\OpenGLConsoleApp\/../../External Libs/GLEW/lib/Release/Win32;E:\Education\5TH YEAR\FALL2019\CPSC499\External Libs\ASSIMP\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

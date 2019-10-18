@@ -17,6 +17,7 @@
 #include "Texture.h"
 #include "Light.h"
 #include "Game.h"
+//#include "Model.h"
 
 
 //#include "include/SOIL2.h"
@@ -48,8 +49,11 @@ Texture stoneTexture;
 //create light
 Light mainLight;
 
+//Model skull;
+
 //create game class
 Game GameClass;
+
 
 //Vertex Shader
 //note the input variables will change often but the uniform 
@@ -148,6 +152,7 @@ void createShaders()
 
 int main()
 {
+
 	mainWindow = glWindow(WIDTH, HEIGHT);
 	mainWindow.Initialise();
 
@@ -161,9 +166,14 @@ int main()
 	stoneTexture = Texture("E:\\Education\\5TH YEAR\\FALL2019\\CPSC499\\GameDev\\OpenGLConsoleApp\\Textures\\stonePath.png");
 	stoneTexture.LoadTextureA();
 
+	//skull = Model();
+	//skull.LoadModel("E:\\Education\\5TH YEAR\\FALL2019\\CPSC499\\GameDev\\OpenGLConsoleApp\\Models\\Skull_scene.obj");
+
 	//initialize light
 	mainLight = Light(1.0f, 1.0f, 1.0f, 0.3f, 2.0f, -1.0f, -2.0f, 1.0f);
 
+	//Initialize game class
+	//GameClass = Game(1.0f, glm::vec3(0.3f, 0.1f, 0.0f));
 
 
 	GLuint uniformProjection = 0;
@@ -178,6 +188,8 @@ int main()
 	//create projection
 	glm::mat4 projection = glm::perspective(45.0f, ((GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight()), 0.1f, 100.0f);
 
+	//create player position
+	glm::vec3 playerPos;// = glm::vec3(0.3f, 0.1f, 0.0f);
 
 	//Loop until window closed
 	//while the shouldClose variable is false, leave window open
@@ -190,8 +202,10 @@ int main()
 
 		//get and handle user input events
 		glfwPollEvents();
-
-		camera.keyControl(mainWindow.getKeys(), deltaTime);
+	
+		//control camera depending on mode
+		camera.keyControl(1, mainWindow.getKeys(), deltaTime);
+		
 		//note:mouse control will not work 100%, for now it's just initializing the rotation data
 		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 
@@ -212,15 +226,15 @@ int main()
 		uniformDirection = shaderList[0].GetDirectionLocation();
 		uniformDiffuseIntensity = shaderList[0].GetDiffuseIntensityLocation();
 
-		//glm::vec3 PlayerPos(0.0f, 0.0f, 0.0f);
-
 
 		mainLight.UseLight(uniformAmbientIntensity, uniformAmbientColor, uniformDiffuseIntensity, uniformDirection);
 
 		//4x4 matrix, automatically set to an identity matrix
 		glm::mat4 model(1.0f);
 		//take identity matrix and apply translation to it. the x value will change to triOffset
-		model = glm::translate(model, GameClass.ProcessGameInput(mainWindow.getKeys(), deltaTime));
+		//model = glm::translate(model, glm::vec3(0.3f, 0.1f, 0.0f));
+		playerPos = GameClass.ProcessGameInput(mainWindow.getKeys(), deltaTime);
+		model = glm::translate(model, playerPos);
 		//rotate model by 45 degrees on the Z axis
 		//model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
@@ -240,6 +254,14 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model2));
 		stoneTexture.UseTexture();
 		meshList[1]->RenderMesh();
+
+		model2 = glm::mat4(1.0f);
+		model2 = glm::translate(model2, glm::vec3(0.3f, 0.1f, -2.5f));
+		//model2 = glm::scale(model2, glm::vec3(0.4f, 0.4f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model2));
+		//stoneTexture.UseTexture();
+		//skull.renderModel();
+
 
 		//clears shader
 		glUseProgram(0);
