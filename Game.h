@@ -12,14 +12,17 @@ class Game
 
 public:
 	Game();
-	Game(GLfloat speed, glm::vec3 playerPos);
+	Game(int mode);
 	~Game();
 	
-	glm::vec3 playerPos;
+	//glm::vec3 playerPos;
 	
-	glm::vec3 ProcessGameInput(bool* keys, GLfloat deltaTime);
+	glm::vec3 ProcessPositionInput(glm::vec3 playerPos, GLfloat speed, bool* keys, GLfloat deltaTime);
+	GLfloat ProcessPlayerSpeed(GLfloat speed, bool* keys);
 
 private:
-	GLfloat playerSpeed;
+	//GLfloat playerSpeed;
+	int gameMode;
+	bool shiftPressed;
 };
 

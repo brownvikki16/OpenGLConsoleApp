@@ -15,9 +15,11 @@
 #include "glWindow.h"
 #include "Camera.h"
 #include "Texture.h"
-#include "Light.h"
+#include "DirectionalLight.h"
 #include "Game.h"
-#include "Model.h"
+#include "CommonValues.h"
+#include "PointLight.h"
+//#include "Model.h"
 
 
 //#include "include/SOIL2.h"
@@ -43,11 +45,17 @@ std::vector<Shader>shaderList;
 //create camera
 Camera camera;
 
+//camera mode
+int camMode;
+
 //Textures
 Texture stoneTexture;
+//Texture lightTexture;
+Texture PikaTexture;
 
 //create light
-Light mainLight;
+DirectionalLight mainLight;
+PointLight pointLights[MAX_POINT_LIGHTS];
 
 //Model skull;
 
@@ -119,11 +127,18 @@ void CreateObject()
 		0.0f, 1.0f, 0.0f,	   0.5f, 1.0f, 		0.0f, 0.0f, 0.0f//top middle
 	};
 
+	GLfloat vertices2[] = {
+		//x       y     z		 u     v		nx     ny    nz
+		-5.0f, -1.0f, -5.0f,	   0.0f, 0.0f,		0.0f, 0.0f, 0.0f,//bottom left value
+		0.0f, -1.0f, -5.0f,	   0.5f, 0.0f, 		0.0f, 0.0f, 0.0f,//bottom middle
+		5.0f, -1.0f, -5.0f,	   1.0f, 0.0f, 		0.0f, 0.0f, 0.0f,//bottom right
+		0.0f, -1.0f, 5.0f,	   0.5f, 1.0f, 		0.0f, 0.0f, 0.0f//top middle
+	};
+
 	calcAverageNormals(indices, 12, vertices, 32, 8, 5);
 	
 	//declare and define mesh object from mesh class
 	mesh* obj1 = new mesh();
-
 	//create mesh
 	obj1->CreateMesh(vertices, indices, 32, 12);
 	//add obj1 to end of list
@@ -131,11 +146,17 @@ void CreateObject()
 
 	//declare and define mesh object from mesh class
 	mesh* obj2 = new mesh();
-
 	//create mesh
 	obj2->CreateMesh(vertices, indices, 32, 12);
 	//add obj2 to end of list
 	meshList.push_back(obj2);
+
+	//declare and define mesh object from mesh class
+	mesh* obj3 = new mesh();
+	//create mesh
+	obj3->CreateMesh(vertices2, indices, 32, 12);
+	//add obj2 to end of list
+	meshList.push_back(obj3);
 }
 
 
@@ -153,6 +174,7 @@ void createShaders()
 int main()
 {
 
+
 	mainWindow = glWindow(WIDTH, HEIGHT);
 	mainWindow.Initialise();
 
@@ -162,34 +184,45 @@ int main()
 	//initialize camera with:
 	//startPosition, startUpVector, startYawAngle, startPitchAngle, startTurnspeed, startMoveSpeed
 	camera = Camera(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), -20.0f, 0.0f, 0.1f, 1.0f);
+	camMode = 0; //0 = manual control; 1 = player control
 
 	stoneTexture = Texture("E:\\Education\\5TH YEAR\\FALL2019\\CPSC499\\GameDev\\OpenGLConsoleApp\\Textures\\stonePath.png");
 	stoneTexture.LoadTextureA();
+	//lightTexture = Texture("E:\\Education\\5TH YEAR\\FALL2019\\CPSC499\\GameDev\\OpenGLConsoleApp\\Textures\\glowImage.png");
+	//lightTexture.LoadTextureA();
+	PikaTexture = Texture("E:\\Education\\5TH YEAR\\FALL2019\\CPSC499\\GameDev\\OpenGLConsoleApp\\Textures\\pikachuTexture.jpg");
+	PikaTexture.LoadTexture();
 
 	//skull = Model();
 	//skull.LoadModel("E:\\Education\\5TH YEAR\\FALL2019\\CPSC499\\GameDev\\OpenGLConsoleApp\\Models\\Skull_scene.obj");
 
 	//initialize light
-	mainLight = Light(1.0f, 1.0f, 1.0f, 0.3f, 2.0f, -1.0f, -2.0f, 1.0f);
+	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f, //color
+								0.1f, 0.3f, //intensities
+								0.0f, 0.0f, -1.0f); //direction
+	unsigned int pointLightCount = 0;
+
+	pointLights[0] = PointLight(0.0f, 1.0f, 0.0f, 
+								0.0f, 0.0f, 
+								0.0f, 0.0f, 0.0f, 
+								0.3f, 0.2f, 0.1f); 
+	pointLightCount++;
 
 	//Initialize game class
-	//GameClass = Game(1.0f, glm::vec3(0.3f, 0.1f, 0.0f));
+	GameClass = Game(camMode);
 
-
+	//
 	GLuint uniformProjection = 0;
 	GLuint uniformModel = 0;
 	GLuint uniformView = 0;
-	GLuint uniformAmbientIntensity = 0;
-	GLuint uniformAmbientColor = 0;
-	GLuint uniformDirection = 0;
-	GLuint uniformDiffuseIntensity = 0;
-
 
 	//create projection
 	glm::mat4 projection = glm::perspective(45.0f, ((GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight()), 0.1f, 100.0f);
 
 	//create player position
-	glm::vec3 playerPos;// = glm::vec3(0.3f, 0.1f, 0.0f);
+	glm::vec3 playerPosition = glm::vec3(0.3f, 0.1f, 0.0f);
+	//create player speed
+	GLfloat playerSpeed = 1.0f;
 
 	//Loop until window closed
 	//while the shouldClose variable is false, leave window open
@@ -203,8 +236,13 @@ int main()
 		//get and handle user input events
 		glfwPollEvents();
 	
+		//set player position
+		playerPosition = GameClass.ProcessPositionInput(playerPosition, playerSpeed, mainWindow.getKeys(), deltaTime);
+		//set player speed
+		playerSpeed = GameClass.ProcessPlayerSpeed(playerSpeed, mainWindow.getKeys());
+
 		//control camera depending on mode
-		camera.keyControl(1, mainWindow.getKeys(), deltaTime);
+		camera.keyControl(playerPosition, camMode, mainWindow.getKeys(), deltaTime);
 		
 		//note:mouse control will not work 100%, for now it's just initializing the rotation data
 		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
@@ -221,25 +259,20 @@ int main()
 		uniformModel = shaderList[0].getModelLocation();
 		uniformProjection = shaderList[0].getProjectionLocation();
 		uniformView = shaderList[0].getViewLocation();
-		uniformAmbientColor = shaderList[0].GetAmbientColorLocation();
-		uniformAmbientIntensity = shaderList[0].getAmbientIntensityLocation();
-		uniformDirection = shaderList[0].GetDirectionLocation();
-		uniformDiffuseIntensity = shaderList[0].GetDiffuseIntensityLocation();
 
+		shaderList[0].setDirectionalLight(&mainLight);
+		shaderList[0].setPointLights(pointLights, pointLightCount);
+	
 
-		mainLight.UseLight(uniformAmbientIntensity, uniformAmbientColor, uniformDiffuseIntensity, uniformDirection);
-
+		//player mesh character
 		//4x4 matrix, automatically set to an identity matrix
 		glm::mat4 model(1.0f);
 		//take identity matrix and apply translation to it. the x value will change to triOffset
 		//model = glm::translate(model, glm::vec3(0.3f, 0.1f, 0.0f));
-		playerPos = GameClass.ProcessGameInput(mainWindow.getKeys(), deltaTime);
-		model = glm::translate(model, playerPos);
+		model = glm::translate(model, playerPosition);
 		//rotate model by 45 degrees on the Z axis
 		//model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
-
-
 		//set uniform value to desired variable (triOffset)void
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
@@ -247,21 +280,23 @@ int main()
 		stoneTexture.UseTexture();
 		meshList[0]->RenderMesh();
 		
-
+		//light object
 		glm::mat4 model2(1.0f);
 		model2 = glm::translate(model2, glm::vec3(0.3f, 0.1f, -2.5f));
-		model2 = glm::scale(model2, glm::vec3(0.4f, 0.4f, 1.0f));
+		model2 = glm::scale(model2, glm::vec3(0.2f, 0.2f, 0.2f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model2));
 		stoneTexture.UseTexture();
 		meshList[1]->RenderMesh();
 
-		model2 = glm::mat4(1.0f);
-		model2 = glm::translate(model2, glm::vec3(0.3f, 0.1f, -2.5f));
-		//model2 = glm::scale(model2, glm::vec3(0.4f, 0.4f, 1.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model2));
-		//stoneTexture.UseTexture();
-		//skull.renderModel();
+		//ground plane
+		glm::mat4 model3(1.0f);
+		model3 = glm::translate(model3, glm::vec3(0.0f, 0.0f, 0.0f));
+		model3 = glm::scale(model3, glm::vec3(10.0f, 10.0f, 10.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model3));
+		PikaTexture.UseTexture();
+		meshList[2]->RenderMesh();
 
+		
 
 		//clears shader
 		glUseProgram(0);

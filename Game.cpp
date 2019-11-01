@@ -3,56 +3,87 @@
 
 Game::Game()
 {
-	playerSpeed = 0;
-	playerPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	//playerSpeed = 0;
+	//playerPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	gameMode = 0;
+	shiftPressed = false;
 }
 
-Game::Game(GLfloat speed, glm::vec3 playerPosition)
+Game::Game(int mode)
 {
-	playerSpeed = speed;
-	playerPos = playerPosition;
+	//playerSpeed = speed;
+	gameMode = mode;
+	//playerPos = playerPosition;
+	shiftPressed = false;
 
 }
 
 Game::~Game()
 {
-	playerSpeed = 0.0f;
-	playerPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	//playerSpeed = 0.0f;
+	gameMode = 0;
+	//playerPos = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
-
-glm::vec3 Game::ProcessGameInput(bool* keys, GLfloat deltaTime)
+glm::vec3 Game::ProcessPositionInput(glm::vec3 playerPos, GLfloat speed, bool* keys, GLfloat deltaTime)
 {
 	
-	GLfloat velocity = playerSpeed * deltaTime;
+	GLfloat velocity = speed * deltaTime;
 
 	//if W is pressed, move forward
-	if (keys[GLFW_KEY_Q])
+	if (gameMode == 0)
 	{
-		playerPos.x += velocity;
 		return playerPos;
 	}
+	
+	if (gameMode == 1)
+	{
 
-	////move backwards
-	//if (keys[GLFW_KEY_S])
-	//{
-	//	position.z -= velocity;
-	//	return position;
-	//}
+		if (keys[GLFW_KEY_W])
+		{
+			playerPos.z += velocity;
+			return playerPos;
+		}
 
-	////move left
-	//if (keys[GLFW_KEY_A])
-	//{
-	//	position.x -= velocity;
-	//	return position;
-	//}
+		if (keys[GLFW_KEY_S])
+		{
+			playerPos.z -= velocity;
+			return playerPos;
+		}
 
-	////move right
-	//if (keys[GLFW_KEY_D])
-	//{
-	//	position.x += velocity;
-	//	return position;
-	//}
+		if (keys[GLFW_KEY_A])
+		{
+			playerPos.x += velocity;
+			return playerPos;
+		}
+
+		if (keys[GLFW_KEY_D])
+		{
+			playerPos.x -= velocity;
+			return playerPos;
+		}
+
+
+	}
 
 	return playerPos;
+}
+
+GLfloat Game::ProcessPlayerSpeed(GLfloat speed, bool* keys)
+{
+	if (keys[GLFW_KEY_RIGHT_SHIFT] || shiftPressed == true)
+	{
+		speed = 3.0f;
+		return speed;
+		shiftPressed = true;
+	}
+
+	if (!keys[GLFW_KEY_RIGHT_SHIFT] || shiftPressed == false)
+	{
+		speed = 1.0f;
+		return speed;
+		shiftPressed = false;
+	}
+
+	return speed;
 }

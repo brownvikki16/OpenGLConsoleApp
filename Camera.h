@@ -15,7 +15,7 @@ public:
 	Camera();
 	Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startTurnSpeed, GLfloat startMoveSpeed);
 
-	void keyControl(int mode, bool* keys, GLfloat deltaTime);
+	void keyControl(glm::vec3 playerPos, int mode, bool* keys, GLfloat deltaTime);
 
 	void mouseControl(GLfloat xChange, GLfloat yChange);
 

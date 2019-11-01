@@ -20,12 +20,12 @@ Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLf
 }
 
 //mode 1 = manual 2 = player
-void Camera::keyControl(int mode, bool* keys, GLfloat deltaTime)
+void Camera::keyControl(glm::vec3 playerPos, int mode, bool* keys, GLfloat deltaTime)
 {
 	GLfloat velocity = movementSpeed * deltaTime;
 	
 	//if W is pressed, move forward
-	if (mode == 1)
+	if (mode == 0)
 	{
 
 		if (keys[GLFW_KEY_W])
@@ -63,6 +63,15 @@ void Camera::keyControl(int mode, bool* keys, GLfloat deltaTime)
 			position -= front * velocity;
 		}
 	}
+
+	if (mode == 1)
+	{
+			position.x = playerPos.x;
+			position.z = playerPos.z;
+			//printf("new cam position: %d \n", position.x);
+	
+	}
+
 }
 
 void Camera::mouseControl(GLfloat xChange, GLfloat yChange)
