@@ -11,8 +11,9 @@ public:
 	Texture(const char* fileLoc);		//main constructor
 
 	bool LoadTexture();			//load texture data (RGB)
-	bool LoadTextureA();		//loads texture with alpha data (RGBA)
-	void UseTexture();			//use texture data
+	bool LoadTextureA(bool blendOn);		//loads texture with alpha data (RGBA)
+	void UseTexture(bool blendOn);			//use texture data
+	void BlendTexture();
 	void ClearTexture();		//clear texture data
 
 	~Texture();					//default deconstructor

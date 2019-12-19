@@ -249,6 +249,7 @@
     <ClCompile Include="glWindow.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="OpenGLConsoleApp.cpp" />
@@ -263,6 +264,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="glWindow.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="PointLight.h" />

@@ -21,7 +21,7 @@ Texture::Texture(const char* fileLoc)
 }
 
 
-bool Texture::LoadTextureA()
+bool Texture::LoadTextureA(bool blendOn)
 {
 	//storing texture data into char array
 	unsigned char* textureData = stbi_load(fileLocation, &width, &height, &bitDepth, 0);
@@ -45,8 +45,12 @@ bool Texture::LoadTextureA()
 	//setup texture image data
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
 	glGenerateMipmap(GL_TEXTURE_2D);
-
 	
+	if (blendOn)
+	{
+		BlendTexture();
+	}
+
 	//unbind texture
 	glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -81,7 +85,7 @@ bool Texture::LoadTexture()
 	//setup texture image data
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
 	glGenerateMipmap(GL_TEXTURE_2D);
-
+	
 
 	//unbind texture
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -92,12 +96,24 @@ bool Texture::LoadTexture()
 	return true;
 }
 
-void Texture::UseTexture()
+void Texture::UseTexture(bool blendOn)
 {
 	//creates a texture unit, will allow you to bind and activate multiple textures
 	//allows for multiple textures on one object
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
+	//if (blendOn)
+	//{
+	//	BlendTexture();
+	//}
+
+}
+
+void Texture::BlendTexture()
+{
+
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+	glColor4f(0.0f, 0.0f, 1.0f, 0.0f);
 
 }
 
@@ -113,4 +129,5 @@ void Texture::ClearTexture()
 
 Texture::~Texture()
 {
+	ClearTexture();
 }

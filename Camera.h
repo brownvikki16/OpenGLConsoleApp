@@ -13,11 +13,13 @@ class Camera
 {
 public:
 	Camera();
-	Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startTurnSpeed, GLfloat startMoveSpeed);
+	Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startTurnSpeed, GLfloat startMoveSpeed, GLfloat limit);
 
 	void keyControl(glm::vec3 playerPos, int mode, bool* keys, GLfloat deltaTime);
 
 	void mouseControl(GLfloat xChange, GLfloat yChange);
+
+	glm::vec3 getCameraPosition();
 
 	glm::mat4 calculateViewMatrix();
 
@@ -33,10 +35,14 @@ private:
 
 	GLfloat yaw;
 	GLfloat pitch;
-	//GLflaot roll;
+	//GLfloat roll;
 
 	GLfloat movementSpeed;
 	GLfloat turnSpeed;
+	glm::vec3 offset;
+
+	enum camMotionState {dwell, catchUp, Follow};
+
 
 	void update();
 };

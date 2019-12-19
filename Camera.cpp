@@ -3,9 +3,11 @@
 
 Camera::Camera()
 {
+	offset = glm::vec3(0.1f, 0.1f, 0.1f);
+	
 }
 
-Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startTurnSpeed, GLfloat startMoveSpeed)
+Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startTurnSpeed, GLfloat startMoveSpeed, GLfloat limit)
 {
 	position = startPosition;
 	worldUp = startUp;
@@ -15,6 +17,7 @@ Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLf
 
 	movementSpeed = startMoveSpeed;
 	turnSpeed = startTurnSpeed;
+	
 
 	update();
 }
@@ -23,6 +26,7 @@ Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLf
 void Camera::keyControl(glm::vec3 playerPos, int mode, bool* keys, GLfloat deltaTime)
 {
 	GLfloat velocity = movementSpeed * deltaTime;
+	enum camMotionState state = dwell;
 	
 	//if W is pressed, move forward
 	if (mode == 0)
@@ -66,9 +70,159 @@ void Camera::keyControl(glm::vec3 playerPos, int mode, bool* keys, GLfloat delta
 
 	if (mode == 1)
 	{
-			position.x = playerPos.x;
+		//glm::vec3 playerPos = playerPos;
+		glm::vec3 distance = position - playerPos;
+		GLfloat thresholdNear = 0.0001f;
+		GLfloat thresholdFar = 0.8f;
+		GLfloat thresholdFurther = 1.2f;
+		//int moveCountdown = 2;
+		if (distance.z < 0.0001f || distance.x < 0.0001f)
+		{
+			state = dwell;
+		}
+
+		if (distance.z < 1.0f && distance.z > 0.0001f)
+		{
+			state = Follow;
+		}
+
+		if (distance.z > 1.0f || distance.x > 1.0f)
+		{
+			state = catchUp;
+		}
+
+		//if (distance.x < 0.0001f)
+		//{
+		//	state = dwell;
+		//}
+
+		if (distance.x < 1.0f && distance.x > 0.0001f)
+		{
+			state = Follow;
+		}
+
+		//if (distance.x > 1.0f)
+		//{
+		//	state = catchUp;
+		//}
+		
+		
+		if (keys[GLFW_KEY_W])
+		{
+
+			//implementing states
+
+			if (state == dwell)
+			{
+				position.z = playerPos.z;
+				//moveCountdown = 2;
+
+			}
+
+			if (state == Follow)
+			{
+				position.z += thresholdNear * velocity;
+			}
+
+			if (state == catchUp)
+			{
+				position.z += thresholdFar * velocity;
+			}
+
+
+			/*printf("new cam position: (%f, %f, %f) \n", position.x, position.y, position.z);
+			printf("new player/target position: (%f, %f, %f) \n", playerPos.x, playerPos.y, playerPos.z);
+			printf("new distance: (%f, %f, %f) \n", distance.x, distance.y, distance.z);*/
+			//printf("velocity: %f \n", velocity);
+
+		}
+
+		if (keys[GLFW_KEY_A])
+		{
+
+
+			//implementing states
+
+			if (state == dwell)
+			{
+				position.x = playerPos.x;
+				//moveCountdown = 2;
+
+			}
+
+			if (state == Follow)
+			{
+				position.x += thresholdNear * velocity;
+			}
+
+			if (state == catchUp)
+			{
+				position.x += thresholdFar * velocity;
+			}
+
+
+			/*printf("new cam position: (%f, %f, %f) \n", position.x, position.y, position.z);
+			printf("new player/target position: (%f, %f, %f) \n", playerPos.x, playerPos.y, playerPos.z);
+			printf("new distance: (%f, %f, %f) \n", distance.x, distance.y, distance.z);*/
+			//printf("velocity: %f \n", velocity);
+		}
+
+		if (keys[GLFW_KEY_S])
+		{
+
+			//implementing states
+
+			if (state == dwell)
+			{
 			position.z = playerPos.z;
-			//printf("new cam position: %d \n", position.x);
+			//moveCountdown = 2;
+
+			}
+
+			if (state == Follow)
+			{
+			position.z += -(thresholdNear) * velocity;
+			}
+
+			if (state == catchUp)
+			{
+			position.z += -(thresholdFar) * velocity;
+			}
+
+
+	/*	printf("new cam position: (%f, %f, %f) \n", position.x, position.y, position.z);
+		printf("new player/target position: (%f, %f, %f) \n", playerPos.x, playerPos.y, playerPos.z);
+		printf("new distance: (%f, %f, %f) \n", distance.x, distance.y, distance.z);
+		printf("velocity: %f \n", velocity);*/
+		}
+
+		if (keys[GLFW_KEY_D])
+		{
+			//implementing states
+
+			if (state == dwell)
+			{
+				position.x = playerPos.x;
+				//moveCountdown = 2;
+			}
+
+			if (state == Follow)
+			{
+				position.x += -(thresholdNear) * velocity;
+			}
+
+			if (state == catchUp)
+			{
+				position.x += -(thresholdFar) * velocity;
+			}
+
+
+			/*printf("new cam position: (%f, %f, %f) \n", position.x, position.y, position.z);
+			printf("new player/target position: (%f, %f, %f) \n", playerPos.x, playerPos.y, playerPos.z);
+			printf("new distance: (%f, %f, %f) \n", distance.x, distance.y, distance.z);*/
+			//printf("velocity: %f \n", velocity);
+		}
+
 	
 	}
 
@@ -98,12 +252,22 @@ void Camera::mouseControl(GLfloat xChange, GLfloat yChange)
 	
 }
 
+glm::vec3 Camera::getCameraPosition()
+{
+	return position;
+}
+
 
 
 glm::mat4 Camera::calculateViewMatrix()
 {
+	GLfloat sinFactor = sin(glfwGetTime());
+	//GLfloat cosFactor = cos(glfwGetTime());
+	//GLfloat tanFactor = tan(glfwGetTime());
+	glm::vec3 camPosShake = glm::vec3(position.x, position.y, position.z);
+	
 	//in a game change position + front to position of main character
-	return glm::lookAt(position, position + front, up);
+	return glm::lookAt(camPosShake, position + front, up);
 
 }
 
